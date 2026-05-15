@@ -1,5 +1,8 @@
 [build]
 dockerfile = "Dockerfile"
+buildContext = "."
 
 [deploy]
 port = 80
+healthcheckPath = "/"
+healthcheckTimeout = 30
