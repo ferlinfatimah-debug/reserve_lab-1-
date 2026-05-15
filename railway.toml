@@ -1,6 +1,5 @@
 [build]
-builder = "heroku.buildpacks"
-buildpacks = ["heroku/nodejs", "heroku/php"]
+dockerfile = "Dockerfile"
 
 [deploy]
-startCommand = "vendor/bin/heroku-php-apache2 public/"
+port = 80

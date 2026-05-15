@@ -1,0 +1,17 @@
+node_modules
+npm-debug.log
+.env
+.env.local
+.env.*.local
+storage/logs
+storage/framework/cache
+storage/framework/views
+storage/framework/sessions
+bootstrap/cache
+vendor
+.git
+.gitignore
+.DS_Store
+Thumbs.db
+.env.example
+README.md
