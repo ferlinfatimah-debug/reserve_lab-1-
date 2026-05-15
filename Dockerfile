@@ -42,10 +42,16 @@ RUN composer install --no-dev --optimize-autoloader
 RUN npm install && npm run build
 
 # Setup Laravel
-RUN cp .env.example .env && php artisan key:generate
+RUN cp .env.example .env
+RUN php artisan key:generate
+RUN touch database/database.sqlite
+RUN chmod 666 database/database.sqlite
+
+# Run migrations
+RUN php artisan migrate --force --seed 2>&1 || true
 
 # Apache config
-RUN echo '<VirtualHost *:80>\n    DocumentRoot /var/www/html/public\n    <Directory /var/www/html/public>\n        AllowOverride All\n        Options Indexes FollowSymLinks\n        Require all granted\n        RewriteEngine On\n        RewriteCond %{REQUEST_FILENAME} !-d\n        RewriteCond %{REQUEST_FILENAME} !-f\n        RewriteRule ^ index.php [QSA,L]\n    </Directory>\n    <Directory /var/www/html/public/storage>\n        <FilesMatch "\\.(jpg|jpeg|png|gif|ico|css|js)$">\n            Header set Cache-Control "max-age=31536000"\n        </FilesMatch>\n    </Directory>\n</VirtualHost>' > /etc/apache2/sites-available/000-default.conf
+RUN echo '<VirtualHost *:80>\n    DocumentRoot /var/www/html/public\n    <Directory /var/www/html/public>\n        AllowOverride All\n        Options Indexes FollowSymLinks\n        Require all granted\n        RewriteEngine On\n        RewriteCond %{REQUEST_FILENAME} !-d\n        RewriteCond %{REQUEST_FILENAME} !-f\n        RewriteRule ^ index.php [QSA,L]\n    </Directory>\n</VirtualHost>' > /etc/apache2/sites-available/000-default.conf
 
 EXPOSE 80
 CMD ["apache2-foreground"]
