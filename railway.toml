@@ -1,0 +1,6 @@
+[build]
+builder = "heroku.buildpacks"
+buildpacks = ["heroku/php"]
+
+[deploy]
+startCommand = "vendor/bin/heroku-php-apache2 public/"
